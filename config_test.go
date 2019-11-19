@@ -139,7 +139,7 @@ func TestOverrideWithArgs(t *testing.T) {
 	tmp := os.Args
 	defer func() { os.Args = tmp }()
 
-	os.Args = []string{"TESTPROGNAME", "-DTEST_INT=55"}
+	os.Args = append(os.Args, "-DTEST_INT=55")
 	os.Setenv("DTEST_INT", "-555")
 	os.Args = append(os.Args, "-DTEST_DURATION=5h4m3s")
 	os.Setenv("DTEST_DURATION", "3h2m1s")

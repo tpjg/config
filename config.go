@@ -49,7 +49,13 @@ func ReadStructFromEnvOverrideWithArgs(v interface{}) error {
 	}
 	tmpfs := flagset{flag.NewFlagSet(os.Args[0], flag.ExitOnError)}
 	tmpfs.setupFlagsForStruct(v)
-	args := append(tmpfs.getArgsFromEnv(), os.Args[1:]...)
+	args := tmpfs.getArgsFromEnv()
+	// Append the flags that do not start with "test." as used go "go test" tools
+	for _, arg := range os.Args[1:] {
+		if !strings.HasPrefix(arg, "-test.") {
+			args = append(args, arg)
+		}
+	}
 	// Now parse the prepared flags with the arguments taken from the environment
 	tmpfs.Parse(args)
 	return nil
